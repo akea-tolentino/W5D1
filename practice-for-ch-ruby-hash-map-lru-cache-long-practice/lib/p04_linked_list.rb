@@ -1,7 +1,7 @@
 class Node
   attr_reader :key
   attr_accessor :val, :next, :prev
-
+  include 'enuermable'
   def initialize(key = nil, val = nil)
     @key = key
     @val = val
@@ -97,11 +97,20 @@ class LinkedList
   end
 
   def remove(key)
-    #set prev next to removed next 
-    #removed next prev to 
-  end
+    if include?(key)
+      node = first 
+      until node.key == key 
+        node = node.next 
+      end
+      node.prev.next = node.next
+      node.next.prev = node.prev 
+      node.next, node.prev = nil, nil
+    end
+      
+  end 
 
   def each
+
   end
 
   # uncomment when you have `each` working and `Enumerable` included
