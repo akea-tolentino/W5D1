@@ -1,3 +1,4 @@
+require 'byebug'
 class HashSet
   attr_reader :count
 
@@ -7,24 +8,23 @@ class HashSet
   end
 
   def insert(key)
-    idx = key.hash % num_buckets
-    self[idx] << key.hash && @count += 1 if !self[idx].include?(key.hash)
+    #debugger
+    return false if include?(key.hash)
+    self[key.hash] << key && @count += 1 if !self.include?(key)
     if @count == num_buckets 
       @count = 0
       resize!
     end
   end
 
-  def include?(key)
-    idx = key.hash % num_buckets
-    self[idx].include?(key.hash)
+  def include?(key) #[[]]
+    self[key.hash].include?(key)
   end
 
 
   def remove(key)
-    idx = key.hash % num_buckets
     if include?(key)
-      self[idx].delete(key.hash)
+      self[key.hash].delete(key)
       @count -=1
     end
   end
@@ -44,7 +44,7 @@ class HashSet
   end
 
   def [](num)
-    @store[num]
+    @store[num % num_buckets] 
     # optional but useful; return the bucket corresponding to `num`
   end
 end
